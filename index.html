@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Pickfile example</title>
+
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="pickfile.css">
+<script type="text/javascript" src="pickfile.js"></script>
+
+</head>
+<body>
+
+    <div id="container">
+        <h1>PickFile example</h1>
+
+        <div id="pickfile"></div>
+
+        <div id="info">Get the source code at <a href="http://github.com/dundalek/pickfile">github</a>.</div>
+
+        <div id="messages"></div>
+    </div>
+
+<script>
+
+var messages = document.querySelector('#messages'),
+    pf = new PickFile({
+        el: '#pickfile',
+        onLoad: function(data, obj) {
+            var html = '';
+            if (obj instanceof File) {
+                html = '<p>Filename: <strong>' + obj.name +
+                '</strong><br> Type: <strong>' + obj.type +
+                '</strong><br> Size: <strong>' + obj.size +
+                '</strong> bytes</p>';
+            } else if (obj instanceof XMLHttpRequest) {
+                html = '<p>URL: <strong>'+obj.url+'</strong></p>';
+            }
+
+            if ((obj.type && obj.type.indexOf("text") == 0) || obj.responseType === 'text') {
+                html += '<pre>'+data+'</pre>';
+            } else {
+                html += '<p>binary file</p>'
+            }
+
+            messages.innerHTML = html;
+        },
+        onError: function(err, xhr) {
+            messages.innerHTML = '<strong>Error:</strong> ' + err;
+        }
+    });
+
+</script>
+
+<style>
+
+#container,
+#messages {
+    margin: 0 auto;
+}
+
+h1,
+#info {
+    text-align: center;
+}
+
+</style>
+
+</body>
+</html>

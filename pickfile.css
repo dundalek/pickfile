@@ -1,0 +1,62 @@
+.pickfile {
+    font-family: helvetica, arial, sans-serif;
+    width: 24em;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+input.pickfile-url[type=text] {
+    width: 15em;
+    vertical-align: top;
+    margin-right: 0.8em;
+}
+
+.pickfile-loadbtn.btn {
+    vertical-align: top;
+    width: 5.5em;
+}
+
+.pickfile-fileinputs {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    width: 7em;
+}
+
+input.pickfile-fileselect[type=file] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: right;
+    -moz-opacity:0 ;
+    filter:alpha(opacity: 0);
+    opacity: 0;
+    z-index: 2;
+    width: 9em;
+
+}
+
+.pickfile-filedrop {
+    border: 3px dashed #aaa;
+    border-radius: 5px;
+    color: #aaa;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    width: 12em;
+    margin-right: 0.8em;
+    height: 24px;
+    line-height: 24px;
+    vertical-align: top;
+}
+
+.pickfile-filedrop:hover,
+.pickfile-filedrop.hover {
+    border-color: #333;
+    color: #333;
+}

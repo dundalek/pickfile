@@ -45,6 +45,37 @@ Type can be one of (letter case is significant, default is *Text*):
 - BinaryString
 - Text
 
+### Downloader component
+
+Widget to download a file. User can specify filename.
+
+```javascript
+
+    var dl = new PickFile.Downloader({
+        el: '#downloader',
+        placeholder: 'Type a filename',  // default: filename.txt
+        filename: 'YourFile.txt',        // default: myfile.txt
+        type: 'text/html',               // default: text/plain
+        content: 'some content here..',
+
+        // setup content provider
+        // will be called when user clicks save file button
+        getFile: function(cb) {
+            cb({
+                content: 'hello' ,
+                type: 'text/plain'
+            });
+        },
+
+        // using short version
+        getContent: function(cb) {
+            cb('hello');
+        }
+        
+    });
+
+```
+
 ## Compatibility
 
 Tested in Chrome 26, Firefox 19, Opera 12. It might work in IE 10, but it has not been tested.

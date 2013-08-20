@@ -8,6 +8,32 @@
 <link rel="stylesheet" type="text/css" href="pickfile.css">
 <script type="text/javascript" src="pickfile.js"></script>
 
+<style>
+
+#container {
+    width: 40em;
+    margin: 20px auto;
+    text-align: center;
+}
+
+#container > *,
+.pickfile {
+    margin: 0 auto;
+}
+
+textarea {
+    width: 35em;
+    height: 10em;
+    
+}
+
+h1,
+#info {
+    text-align: center;
+}
+
+</style>
+
 </head>
 <body>
 
@@ -16,9 +42,19 @@
 
         <div id="pickfile"></div>
 
+        <div id="messages"></div>
+
+        <textarea id="content">Load a file to replace this content.
+
+Click save file to download this content.
+
+Or type in something...
+</textarea>
+
+        <div id="downloader"></div>
+
         <div id="info">Get the source code at <a href="http://github.com/dundalek/pickfile">github</a>.</div>
 
-        <div id="messages"></div>
     </div>
 
 <script>
@@ -38,7 +74,8 @@ var messages = document.querySelector('#messages'),
             }
 
             if ((obj.type && obj.type.indexOf("text") == 0) || obj.responseType === 'text') {
-                html += '<pre>'+data+'</pre>';
+                // html += '<pre>'+data+'</pre>';
+                document.querySelector('#content').value = data;
             } else {
                 html += '<p>binary file</p>'
             }
@@ -50,21 +87,28 @@ var messages = document.querySelector('#messages'),
         }
     });
 
+    var dl = new PickFile.Downloader({
+        el: '#downloader',
+        placeholder: 'Type a filename', // default: filename.txt
+        filename: 'YourFile.txt', // default: myfile.txt
+        type: 'text/html', // default: text/plain
+        content: 'some content here..',
+
+        // setup content provider
+        getFile: function(cb) {
+            cb({
+                content: 'hello' ,
+                type: 'text/plain'
+            });
+        },
+
+        // using shorter version
+        getContent: function(cb) {
+            cb('hello');
+        }
+        
+    });
 </script>
-
-<style>
-
-#container,
-#messages {
-    margin: 0 auto;
-}
-
-h1,
-#info {
-    text-align: center;
-}
-
-</style>
 
 </body>
 </html>

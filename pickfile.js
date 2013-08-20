@@ -8,13 +8,9 @@
     }
 })(function() {
 
-    var PickFile = function(options) {
+    function init(defaults, options) {
         options = options || {};
-        this.options = {
-            datatype: 'Text',
-            onLoad: function() {},
-            onError: function() {}
-        };
+        this.options = defaults;
         for (var o in options) {
             this.options[o] = options[o];
         }
@@ -33,6 +29,14 @@
         for (var i = 0; i < this.elements.length; i+=1) {
             this.els[this.elements[i]] = this.el.querySelector('.pickfile-'+this.elements[i]);
         }
+    }
+
+    var PickFile = function(options) {
+        this.init({
+            datatype: 'Text',
+            onLoad: function() {},
+            onError: function() {}
+        }, options);
 
         // file select
         this.els.fileselect.addEventListener("change", this.onFileSelect.bind(this), false);
@@ -90,6 +94,7 @@
             xhr.responseType = this.options.datatype === 'BinaryString' ? 'blob' : this.options.datatype.toLowerCase();
             xhr.send();
         },
+        init: init,
         parseFile: function (file) {
             var method = 'readAs' + this.options.datatype,
                 reader = new FileReader();
@@ -99,6 +104,81 @@
                 }.bind(this);
                 reader[method](file);
             }
+        }
+    }
+
+    PickFile.Downloader = function(options) {
+        this.init({
+            filename: 'myfile.txt',
+            placeholder: 'filename.txt',
+            type: 'text/plain',
+            content: ''
+        }, options);
+
+        this.els.filename.placeholder = this.options.placeholder;
+        this.els.filename.value = this.options.filename || '';
+
+        this.els.savebtn.addEventListener("click", this.onDownload.bind(this), false);
+    };
+
+    PickFile.Downloader.prototype = {
+        elements: ['filename', 'savebtn', 'download'],
+        template: '<div class="pickfile"><input type="text" class="pickfile-filename"><button class="btn btn-primary pickfile-savebtn">Save file</button><output class="pickfile-download"></output></div>',
+        init: init,
+        onDownload: function() {
+            if (this.options.getFile) {
+                this.options.getFile(this.downloadFile.bind(this));
+            } else if (this.options.getContent) {
+                this.options.getContent(function(content) {
+                    this.downloadFile({
+                        content: content
+                    });
+                }.bind(this));
+            } else {
+                this.downloadFile({});
+            }
+        },
+        downloadFile: function(file) {
+            file.type = file.type || this.options.type;
+            file.filename = file.filename || this.els.filename.value || this.options.filename;
+            file.content = file.content || this.options.content;
+
+            window.URL = window.webkitURL || window.URL;
+
+            var prevLink = this.els.download.querySelector('a');
+            if (prevLink) {
+                window.URL.revokeObjectURL(prevLink.href);
+                this.els.download.innerHTML = '';
+            }
+
+            var bb = new Blob([file.content], {type: file.type});
+
+            var a = document.createElement('a');
+            a.download = file.filename;
+            a.href = window.URL.createObjectURL(bb);
+            a.textContent = 'Download';
+
+            a.dataset.downloadurl = [file.type, a.download, a.href].join(':');
+
+            this.els.download.appendChild(a);
+
+            var self = this;
+            a.onclick = function(e) {
+                if ('disabled' in this.dataset) {
+                  return false;
+                }
+
+                self.cleanUp(this);
+            };
+        },
+        cleanUp: function(a) {
+            a.textContent = 'Downloaded';
+            a.dataset.disabled = true;
+
+            // Need a small delay for the revokeObjectURL to work properly.
+            setTimeout(function() {
+               window.URL.revokeObjectURL(a.href);
+            }, 1500);
         }
     }
 

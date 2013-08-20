@@ -2,7 +2,7 @@
   "name": "pickfile",
   "repo": "dundalek/pickfile",
   "description": "JavaScript file picker component supporting drag and drop, file chooser and remote URL",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "keywords": [],
   "dependencies": {},
   "development": {},

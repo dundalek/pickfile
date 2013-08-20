@@ -54,7 +54,7 @@
         } else {
             this.els.filedrop.style.display = "none";
         }
-    }
+    };
 
     PickFile.prototype = {
         elements: ['fileselect', 'filedrop', 'loadbtn', 'url'],
@@ -69,7 +69,7 @@
             this.onFiledropHover(e);
 
             var files = e.target.files || e.dataTransfer.files;
-            for (var i = 0, f; f = files[i]; i++) {
+            for (var i = 0, f; (f = files[i]); i++) {
                 this.parseFile(f);
             }
         },
@@ -105,7 +105,7 @@
                 reader[method](file);
             }
         }
-    }
+    };
 
     PickFile.Downloader = function(options) {
         this.init({
@@ -180,7 +180,7 @@
                window.URL.revokeObjectURL(a.href);
             }, 1500);
         }
-    }
+    };
 
     return PickFile;
 });

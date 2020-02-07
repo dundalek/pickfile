@@ -1,7 +1,7 @@
 
 # PickFile.js
 
-This component can be used to easily load user files. See the [demo](http://dundalek.com/pickfile/).
+This component can be used to easily load user files. See the [demo](https://dundalek.com/pickfile/).
 
 ## Features
 
